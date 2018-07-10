@@ -201,6 +201,7 @@ public class GATEJsonExporter extends CorpusExporter {
         docAnnots = doc.getAnnotations((String)options.get("documentAnnotationASName"))
                 .get((String)options.get("documentAnnotationType"));
       }
+      
       if(docAnnots == null || docAnnots.isEmpty()) {
         // no document annotations, write everything
         Map<String, Collection<Annotation>> sortedAnnots = new LinkedHashMap<>();

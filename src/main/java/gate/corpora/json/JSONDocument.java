@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import gate.Factory;
 import gate.FeatureMap;
@@ -57,14 +58,7 @@ public class JSONDocument {
    */
   protected JSONDocument(JsonNode json, String textPath, boolean handleEntities) {
     string = "";
-    Iterator<String> keys = json.fieldNames();
-    FeatureMap features = Factory.newFeatureMap();
     annotations = new HashSet<PreAnnotation>();
-
-    while (keys.hasNext()) {
-      String key = keys.next();
-      features.put(key, JSONUtils.process(json.get(key)));
-    }
     
     String[] path = textPath.split("\\.");
     
@@ -73,10 +67,18 @@ public class JSONDocument {
     for (int i = 0 ; i < path.length - 1 ; ++i) {
       current = json.get(path[i]);
     }
-        
+    
     RepositioningInfo repos = new RepositioningInfo();
-    string = unescape(current.get(path[path.length-1]).asText(), repos);
+    string = unescape(((ObjectNode)current).remove(path[path.length-1]).asText(), repos);
     if(handleEntities) processEntities(current, 0L, repos);
+    
+    Iterator<String> keys = json.fieldNames();
+    FeatureMap features = Factory.newFeatureMap();
+    
+    while (keys.hasNext()) {
+      String key = keys.next();
+      features.put(key, JSONUtils.process(json.get(key)));
+    }
     
     annotations.add(new PreAnnotation(0L, string.length(), JSONUtils.ANNOTATION_TYPE, features));
   }
@@ -156,7 +158,7 @@ public class JSONDocument {
    *         the content keys.
    */
   private void processEntities(JsonNode json, long startOffset, RepositioningInfo repos) {
-    JsonNode entitiesNode = json.get(JSONUtils.ENTITIES_ATTRIBUTE);
+    JsonNode entitiesNode = ((ObjectNode)json).remove(JSONUtils.ENTITIES_ATTRIBUTE);
     if(entitiesNode == null || !entitiesNode.isObject()) {
       // no entities, nothing to do
       return;
