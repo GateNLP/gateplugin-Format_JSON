@@ -45,12 +45,12 @@ import gate.util.Out;
     comment = "Format parser for Twitter JSON files",
     helpURL = "http://gate.ac.uk/userguide/sec:social:twitter:format")
 
-public class JSONFormat extends TextualDocumentFormat {
+public class GATEJSONFormat extends TextualDocumentFormat {
   private static final long serialVersionUID = 6878020036304333918L;
 
   
   /** Default construction */
-  public JSONFormat() { super();}
+  public GATEJSONFormat() { super();}
 
   /** Initialise this resource, and return it. */
   public Resource init() throws ResourceInstantiationException{
