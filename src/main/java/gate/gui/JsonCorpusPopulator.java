@@ -272,6 +272,8 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
                 Factory.newFeatureMap(),
                 docID);
 
+        corpus.add(document);
+        
         if(corpus.getLRPersistenceId() != null) {
           corpus.unloadDocument(document);
           Factory.deleteResource(document);
