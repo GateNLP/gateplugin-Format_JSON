@@ -1,3 +1,13 @@
+/*
+ *  Copyright (c) 1995-2018, The University of Sheffield. See the file
+ *  COPYRIGHT.txt in the software or at http://gate.ac.uk/gate/COPYRIGHT.txt
+ *
+ *  This file is part of GATE (see http://gate.ac.uk/), and is free
+ *  software, licenced under the GNU Library General Public License,
+ *  Version 3, June 2007 (in the distribution as file licence.html,
+ *  and also available at http://gate.ac.uk/gate/licence.html).
+ */
+
 package gate.gui;
 
 import java.awt.BorderLayout;
@@ -37,8 +47,6 @@ import gate.Document;
 import gate.DocumentFormat;
 import gate.Factory;
 import gate.FeatureMap;
-import gate.GateConstants;
-import gate.Utils;
 import gate.corpora.MimeType;
 import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
@@ -128,6 +136,7 @@ public class JsonCorpusPopulator extends ResourceHelper {
 
         try {
           if(!txtIDPath.getText().trim().isEmpty()) {
+            @SuppressWarnings("unused")
             JsonPointer idPointer =
                 JsonPointer.compile(txtIDPath.getText().trim());
           }

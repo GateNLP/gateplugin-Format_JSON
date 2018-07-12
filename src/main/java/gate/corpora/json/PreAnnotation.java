@@ -1,14 +1,11 @@
 /*
- * Copyright (c) 2011--2014, The University of Sheffield.
+ *  Copyright (c) 1995-2018, The University of Sheffield. See the file
+ *  COPYRIGHT.txt in the software or at http://gate.ac.uk/gate/COPYRIGHT.txt
  *
- * This file is part of GATE (see http://gate.ac.uk/), and is free
- * software, licenced under the GNU Library General Public License,
- * Version 2, June1991.
- *
- * A copy of this licence is included in the distribution in the file
- * licence.html, and is also available at http://gate.ac.uk/gate/licence.html.
- *
- *  $Id: PreAnnotation.java 18579 2015-02-17 18:49:14Z johann_p $
+ *  This file is part of GATE (see http://gate.ac.uk/), and is free
+ *  software, licenced under the GNU Library General Public License,
+ *  Version 3, June 2007 (in the distribution as file licence.html,
+ *  and also available at http://gate.ac.uk/gate/licence.html).
  */
 
 package gate.corpora.json;

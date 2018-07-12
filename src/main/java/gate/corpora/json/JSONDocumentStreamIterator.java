@@ -1,13 +1,11 @@
 /*
- * Copyright (c) 1995-2014, The University of Sheffield. See the file
- * COPYRIGHT.txt in the software or at http://gate.ac.uk/gate/COPYRIGHT.txt
+ *  Copyright (c) 1995-2018, The University of Sheffield. See the file
+ *  COPYRIGHT.txt in the software or at http://gate.ac.uk/gate/COPYRIGHT.txt
  *
- * This file is part of GATE (see http://gate.ac.uk/), and is free software,
- * licenced under the GNU Library General Public License, Version 2, June 1991
- * (in the distribution as file licence.html, and also available at
- * http://gate.ac.uk/gate/licence.html).
- * 
- * $Id: TweetStreamIterator.java 18420 2014-10-30 19:26:45Z ian_roberts $
+ *  This file is part of GATE (see http://gate.ac.uk/), and is free
+ *  software, licenced under the GNU Library General Public License,
+ *  Version 3, June 2007 (in the distribution as file licence.html,
+ *  and also available at http://gate.ac.uk/gate/licence.html).
  */
 package gate.corpora.json;
 
