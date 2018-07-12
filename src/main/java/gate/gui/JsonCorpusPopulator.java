@@ -21,9 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import javax.activation.MimeTypeParseException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -47,13 +51,16 @@ import gate.Document;
 import gate.DocumentFormat;
 import gate.Factory;
 import gate.FeatureMap;
+import gate.Gate;
 import gate.corpora.MimeType;
+import gate.creole.Plugin;
 import gate.creole.metadata.AutoInstance;
 import gate.creole.metadata.CreoleResource;
+import gate.event.PluginListener;
 import gate.swing.SpringUtilities;
 
 @CreoleResource(name = "JSON Corpus Populator", tool = true, autoinstances = @AutoInstance)
-public class JsonCorpusPopulator extends ResourceHelper {
+public class JsonCorpusPopulator extends ResourceHelper implements PluginListener {
 
   private static final long serialVersionUID = -1712269859711281005L;
 
@@ -75,6 +82,8 @@ public class JsonCorpusPopulator extends ResourceHelper {
 
   public JsonCorpusPopulator() {
 
+    
+    
     dialog = new JDialog(MainFrame.getInstance(), "Populate from JSON...",
         Dialog.DEFAULT_MODALITY_TYPE);
     dialog.getContentPane().setLayout(new BorderLayout());
@@ -85,7 +94,10 @@ public class JsonCorpusPopulator extends ResourceHelper {
     JPanel options = new JPanel(new SpringLayout());
     options.setBorder(new TitledBorder("Options:"));
 
-    cboMimeType = new JComboBox<String>(new String[]{"text/json"});
+    cboMimeType = new JComboBox<String>();
+    updateMimeTypeList();
+    Gate.getCreoleRegister().addPluginListener(this);
+    
     cboMimeType.setEditable(true);
     txtIDPath = new JTextField();
 
@@ -267,4 +279,50 @@ public class JsonCorpusPopulator extends ResourceHelper {
     }
   }
 
+  @Override
+  public void pluginLoaded(Plugin plugin) {
+    updateMimeTypeList();
+  }
+
+  @Override
+  public void pluginUnloaded(Plugin plugin) {
+    updateMimeTypeList();
+  }
+
+  private void updateMimeTypeList() {
+    DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>)cboMimeType.getModel();
+    
+    Object selected = cboMimeType.getSelectedItem();
+    
+    model.removeAllElements();
+    
+    Set<String> knownMimeTypes = new TreeSet<String>();
+    
+    for (String mimeType : DocumentFormat.getSupportedMimeTypes()) {
+      if (mimeType.toLowerCase().indexOf("json") != -1) {
+        knownMimeTypes.add(mimeType);
+      }
+      else {
+        try {
+          MimeType mimeTypeObj = new MimeType(mimeType);
+          
+          DocumentFormat docFormat = DocumentFormat.getDocumentFormat(mimeTypeObj);
+          
+          if (docFormat != null && docFormat.getName().toLowerCase().indexOf("json") != -1) {
+            knownMimeTypes.add(mimeType);
+          }          
+        } catch(MimeTypeParseException e) {
+          //should be impossible
+        }
+      }
+    }
+    
+    for(String known : knownMimeTypes) {
+      model.addElement(known);
+    }
+    
+    if (selected != null && knownMimeTypes.contains(selected)) {    
+      cboMimeType.setSelectedItem(selected);
+    }
+  }
 }
