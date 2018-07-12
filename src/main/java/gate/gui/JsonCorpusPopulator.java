@@ -38,6 +38,8 @@ import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonPointer;
@@ -61,6 +63,8 @@ import gate.swing.SpringUtilities;
 
 @CreoleResource(name = "JSON Corpus Populator", tool = true, autoinstances = @AutoInstance)
 public class JsonCorpusPopulator extends ResourceHelper implements PluginListener {
+  
+  private static final Logger logger = Logger.getLogger(JsonCorpusPopulator.class.getName());
 
   private static final long serialVersionUID = -1712269859711281005L;
 
@@ -273,8 +277,7 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
         }
       } catch(Exception e) {
         //TODO should this be a warning or an exception etc.
-        // logger.warn("Error encountered while parsing object with ID " + id
-        // + " - skipped", e);
+        logger.warn("Failed to correctly parse JSON document", e);
       }
     }
   }
