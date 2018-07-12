@@ -83,7 +83,7 @@ public class GATEJsonExporter extends CorpusExporter {
   		"whereas false will simply output one object per document " +
   		"separated by newlines.")
   public void setExportAsArray(Boolean array) {}
-  public Boolean getExportAsArray() { return null; }
+  public Boolean getExportAsArray() { return Boolean.FALSE; }
   
   /**
    * No-op, exists only as a host for the parameter annotations.

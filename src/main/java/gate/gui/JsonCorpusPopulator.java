@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -302,7 +303,7 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
     Set<String> knownMimeTypes = new TreeSet<String>();
     
     for (String mimeType : DocumentFormat.getSupportedMimeTypes()) {
-      if (mimeType.toLowerCase().indexOf("json") != -1) {
+      if (mimeType.toLowerCase(Locale.ENGLISH).indexOf("json") != -1) {
         knownMimeTypes.add(mimeType);
       }
       else {
@@ -311,7 +312,7 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
           
           DocumentFormat docFormat = DocumentFormat.getDocumentFormat(mimeTypeObj);
           
-          if (docFormat != null && docFormat.getName().toLowerCase().indexOf("json") != -1) {
+          if (docFormat != null && docFormat.getName().toLowerCase(Locale.ENGLISH).indexOf("json") != -1) {
             knownMimeTypes.add(mimeType);
           }          
         } catch(MimeTypeParseException e) {

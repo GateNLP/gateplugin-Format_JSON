@@ -26,7 +26,7 @@ import gate.corpora.RepositioningInfo;
 
 public class JSONDocument {
   private String string;
-  private long start;
+
   private Set<PreAnnotation> annotations;
   
   
@@ -42,14 +42,6 @@ public class JSONDocument {
     return this.string;
   }
   
-  public long getStart() {
-    return this.start;
-  }
-  
-  public long getEnd() {
-    return this.start + this.string.length();
-  }
-
   /**
    * Used by the JSONTWeetFormat; the DocumentContent contains only the main text;
    * the annotation feature map contains all the other JSON data, recursively.
