@@ -1,11 +1,11 @@
 /*
- *  Copyright (c) 1995-2018, The University of Sheffield. See the file
- *  COPYRIGHT.txt in the software or at http://gate.ac.uk/gate/COPYRIGHT.txt
+ * Copyright (c) 1995-2018, The University of Sheffield. See the file
+ * COPYRIGHT.txt in the software or at http://gate.ac.uk/gate/COPYRIGHT.txt
  *
- *  This file is part of GATE (see http://gate.ac.uk/), and is free
- *  software, licenced under the GNU Library General Public License,
- *  Version 3, June 2007 (in the distribution as file licence.html,
- *  and also available at http://gate.ac.uk/gate/licence.html).
+ * This file is part of GATE (see http://gate.ac.uk/), and is free software,
+ * licenced under the GNU Library General Public License, Version 3, June 2007
+ * (in the distribution as file licence.html, and also available at
+ * http://gate.ac.uk/gate/licence.html).
  */
 
 package gate.gui;
@@ -63,9 +63,11 @@ import gate.event.PluginListener;
 import gate.swing.SpringUtilities;
 
 @CreoleResource(name = "JSON Corpus Populator", tool = true, autoinstances = @AutoInstance)
-public class JsonCorpusPopulator extends ResourceHelper implements PluginListener {
-  
-  private static final Logger logger = Logger.getLogger(JsonCorpusPopulator.class.getName());
+public class JsonCorpusPopulator extends ResourceHelper
+                                 implements PluginListener {
+
+  private static final Logger logger =
+      Logger.getLogger(JsonCorpusPopulator.class.getName());
 
   private static final long serialVersionUID = -1712269859711281005L;
 
@@ -87,8 +89,6 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
 
   public JsonCorpusPopulator() {
 
-    
-    
     dialog = new JDialog(MainFrame.getInstance(), "Populate from JSON...",
         Dialog.DEFAULT_MODALITY_TYPE);
     dialog.getContentPane().setLayout(new BorderLayout());
@@ -102,7 +102,7 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
     cboMimeType = new JComboBox<String>();
     updateMimeTypeList();
     Gate.getCreoleRegister().addPluginListener(this);
-    
+
     cboMimeType.setEditable(true);
     txtIDPath = new JTextField();
 
@@ -116,6 +116,8 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
 
     dialog.getContentPane().add(options, BorderLayout.NORTH);
     dialog.getContentPane().add(fileChooser, BorderLayout.CENTER);
+
+    dialog.pack();
 
     dialog.addWindowListener(new WindowAdapter() {
       @Override
@@ -190,10 +192,10 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
       @Override
       public void actionPerformed(ActionEvent event) {
 
-        dialog.pack();
+        cboMimeType.getEditor().getEditorComponent()
+            .setBackground(UIManager.getColor("TextField.background"));
+        txtIDPath.setBackground(UIManager.getColor("TextField.background"));
         dialog.setLocationRelativeTo(dialog.getParent());
-
-        cboMimeType.setBackground(UIManager.getColor("TextField.background"));
 
         returnValue = ERROR;
 
@@ -268,18 +270,16 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
       try {
         Document document =
             (Document)Factory.createResource("gate.corpora.DocumentImpl",
-                docParams,
-                Factory.newFeatureMap(),
-                docID);
+                docParams, Factory.newFeatureMap(), docID);
 
         corpus.add(document);
-        
+
         if(corpus.getLRPersistenceId() != null) {
           corpus.unloadDocument(document);
           Factory.deleteResource(document);
         }
       } catch(Exception e) {
-        //TODO should this be a warning or an exception etc.
+        // TODO should this be a warning or an exception etc.
         logger.warn("Failed to correctly parse JSON document", e);
       }
     }
@@ -296,38 +296,40 @@ public class JsonCorpusPopulator extends ResourceHelper implements PluginListene
   }
 
   private void updateMimeTypeList() {
-    DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>)cboMimeType.getModel();
-    
+    DefaultComboBoxModel<String> model =
+        (DefaultComboBoxModel<String>)cboMimeType.getModel();
+
     Object selected = cboMimeType.getSelectedItem();
-    
+
     model.removeAllElements();
-    
+
     Set<String> knownMimeTypes = new TreeSet<String>();
-    
-    for (String mimeType : DocumentFormat.getSupportedMimeTypes()) {
-      if (mimeType.toLowerCase(Locale.ENGLISH).indexOf("json") != -1) {
+
+    for(String mimeType : DocumentFormat.getSupportedMimeTypes()) {
+      if(mimeType.toLowerCase(Locale.ENGLISH).indexOf("json") != -1) {
         knownMimeTypes.add(mimeType);
-      }
-      else {
+      } else {
         try {
           MimeType mimeTypeObj = new MimeType(mimeType);
-          
-          DocumentFormat docFormat = DocumentFormat.getDocumentFormat(mimeTypeObj);
-          
-          if (docFormat != null && docFormat.getName().toLowerCase(Locale.ENGLISH).indexOf("json") != -1) {
+
+          DocumentFormat docFormat =
+              DocumentFormat.getDocumentFormat(mimeTypeObj);
+
+          if(docFormat != null && docFormat.getName()
+              .toLowerCase(Locale.ENGLISH).indexOf("json") != -1) {
             knownMimeTypes.add(mimeType);
-          }          
+          }
         } catch(MimeTypeParseException e) {
-          //should be impossible
+          // should be impossible
         }
       }
     }
-    
+
     for(String known : knownMimeTypes) {
       model.addElement(known);
     }
-    
-    if (selected != null && knownMimeTypes.contains(selected)) {    
+
+    if(selected != null && knownMimeTypes.contains(selected)) {
       cboMimeType.setSelectedItem(selected);
     }
   }
