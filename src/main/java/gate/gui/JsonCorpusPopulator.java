@@ -87,7 +87,7 @@ public class JsonCorpusPopulator extends ResourceHelper
 
   private static final int APPROVE = 1;
 
-  public JsonCorpusPopulator() {
+  private void buildGUI() {
 
     dialog = new JDialog(MainFrame.getInstance(), "Populate from JSON...",
         Dialog.DEFAULT_MODALITY_TYPE);
@@ -191,6 +191,8 @@ public class JsonCorpusPopulator extends ResourceHelper
 
       @Override
       public void actionPerformed(ActionEvent event) {
+        
+        if (dialog == null) buildGUI();
 
         cboMimeType.getEditor().getEditorComponent()
             .setBackground(UIManager.getColor("TextField.background"));
