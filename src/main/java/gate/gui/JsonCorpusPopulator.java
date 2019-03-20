@@ -77,7 +77,7 @@ public class JsonCorpusPopulator extends ResourceHelper
 
   private JTextField txtIDPath;
 
-  private JFileChooser fileChooser = new JFileChooser();
+  private JFileChooser fileChooser;
 
   private int returnValue;
 
@@ -94,6 +94,8 @@ public class JsonCorpusPopulator extends ResourceHelper
     dialog.getContentPane().setLayout(new BorderLayout());
     dialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 
+    fileChooser = new JFileChooser();
+    
     MainFrame.getGuiRoots().add(dialog);
 
     JPanel options = new JPanel(new SpringLayout());
