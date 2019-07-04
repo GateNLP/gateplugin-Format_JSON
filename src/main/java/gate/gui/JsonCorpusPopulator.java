@@ -215,8 +215,8 @@ public class JsonCorpusPopulator extends ResourceHelper
 		new Thread(() -> {
 			try {
 
-				try (GZIPInputStream gzin = new GZIPInputStream(
-						new FileInputStream(fileChooser.getSelectedFile()))) {
+				try (InputStream in = new FileInputStream(fileChooser.getSelectedFile());
+						GZIPInputStream gzin = new GZIPInputStream(in)) {
 					populate((Corpus) handle.getTarget(), gzin, mimeType, idPath.isEmpty() ? null : idPath);
 				} catch (ZipException zippy) {
 					try (InputStream in = new FileInputStream(fileChooser.getSelectedFile())) {
