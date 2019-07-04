@@ -207,22 +207,16 @@ public class JsonCorpusPopulator extends ResourceHelper
 
         if(returnValue != APPROVE) return;
 
-        try {
+        final String mimeType = cboMimeType.getSelectedItem().toString().trim();
+        final String idPath = txtIDPath.getText().trim();
 
-          try (InputStream in =
-              new FileInputStream(fileChooser.getSelectedFile())) {
-
-            String mimeType = cboMimeType.getSelectedItem().toString().trim();
-            String idPath = txtIDPath.getText().trim();
-
-            populate((Corpus)handle.getTarget(), in, mimeType,
-                idPath.isEmpty() ? null : idPath);
-          } catch(IOException e) {
+        new Thread(() -> {
+          try (InputStream in = new FileInputStream(fileChooser.getSelectedFile())) {
+              populate((Corpus) handle.getTarget(), in, mimeType, idPath.isEmpty() ? null : idPath);
+          } catch (IOException e) {
             e.printStackTrace();
           }
-        } finally {
-
-        }
+        }).start();
       }
     });
 
