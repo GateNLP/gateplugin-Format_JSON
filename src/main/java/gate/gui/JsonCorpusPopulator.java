@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipException;
 
 import javax.activation.MimeTypeParseException;
 import javax.swing.AbstractAction;
@@ -210,13 +212,21 @@ public class JsonCorpusPopulator extends ResourceHelper
         final String mimeType = cboMimeType.getSelectedItem().toString().trim();
         final String idPath = txtIDPath.getText().trim();
 
-        new Thread(() -> {
-          try (InputStream in = new FileInputStream(fileChooser.getSelectedFile())) {
-              populate((Corpus) handle.getTarget(), in, mimeType, idPath.isEmpty() ? null : idPath);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }).start();
+		new Thread(() -> {
+			try {
+
+				try (GZIPInputStream gzin = new GZIPInputStream(
+						new FileInputStream(fileChooser.getSelectedFile()))) {
+					populate((Corpus) handle.getTarget(), gzin, mimeType, idPath.isEmpty() ? null : idPath);
+				} catch (ZipException zippy) {
+					try (InputStream in = new FileInputStream(fileChooser.getSelectedFile())) {
+						populate((Corpus) handle.getTarget(), in, mimeType, idPath.isEmpty() ? null : idPath);
+					}
+				}
+			} catch (IOException bungle) {
+				bungle.printStackTrace();
+			}
+		}).start();
       }
     });
 
