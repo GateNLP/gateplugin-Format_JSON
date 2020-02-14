@@ -90,12 +90,15 @@ public class GATEJSONFormat extends TextualDocumentFormat {
     
     if (doc instanceof DocumentImpl) {
       try {
-        MimeType mimeType = new MimeType(((DocumentImpl)doc).getMimeType());
-        String paramValue = mimeType.getParameterValue("text-path");
-        
-        if (paramValue != null && !paramValue.trim().isEmpty())
-          textPath = paramValue;
-        
+        String feature = ((DocumentImpl)doc).getMimeType();
+        if (feature != null) {
+	      MimeType mimeType = new MimeType(feature);
+	      String paramValue = mimeType.getParameterValue("text-path");
+
+          if (paramValue != null && !paramValue.trim().isEmpty())
+            textPath = paramValue;
+        }
+       
       } catch(MimeTypeParseException | RuntimeException e) {
         e.printStackTrace();
       }
