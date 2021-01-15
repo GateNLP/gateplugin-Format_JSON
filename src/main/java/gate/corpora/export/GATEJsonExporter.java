@@ -205,7 +205,7 @@ public class GATEJsonExporter extends CorpusExporter {
         for(Map.Entry<String, Collection<Annotation>> entry : annotationsMap.entrySet()) {
           sortedAnnots.put(entry.getKey(), Utils.inDocumentOrder((AnnotationSet)entry.getValue()));
         }
-        DocumentJsonUtils.writeDocument(doc, 0L, Utils.end(doc), sortedAnnots, null, null, generator);
+        DocumentJsonUtils.writeDocument(doc, 0L, Utils.end(doc), sortedAnnots, doc.getFeatures(), null, generator);
       } else {
         for(Annotation docAnnot : Utils.inDocumentOrder(docAnnots)) {
           Map<String, Collection<Annotation>> coveredAnnotations = new HashMap<>();
